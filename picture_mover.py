@@ -46,4 +46,5 @@ files_on_disc = get_files_with_suffixes_any_case(["jpg", "jpeg", "mov", "mp4"])
 files_in_db = get_files_in_db(db_file)
 files_to_archive = files_on_disc - files_in_db
 archive_files(files_to_archive, file_directory, archive_directory)
+print("{} files archived".format(len(files_to_archive)))
 
