@@ -25,17 +25,20 @@ def get_files_in_db(db_file):
 def get_filenames_from_table(cursor, table_name):
     return set(map(operator.itemgetter(0), cursor.execute("SELECT filename FROM " + table_name).fetchall()))
 
-def archive_files(files, src_dir, archive_dir):
-    for src in files:
-        target = src.replace(src_dir, archive_dir)
-        target_parts = target.split('/')
-        target_dir = '/'.join(target_parts[:-1])
-        ensure_directory(target_dir)
-        os.rename(src, target)
+def get_directory(path):
+    path_parts = path.split('/')
+    return '/'.join(path_parts[:-1])
 
 def ensure_directory(dir):
     if not os.path.exists(dir):
         os.makedirs(dir)
+
+def archive_files(files, src_dir, archive_dir):
+    for src in files:
+        target = src.replace(src_dir, archive_dir)
+        target_dir = get_directory(target)
+        ensure_directory(target_dir)
+        os.rename(src, target)
 
 home = os.environ["HOME"]
 db_file = home + "/.local/share/shotwell/data/photo.db"
